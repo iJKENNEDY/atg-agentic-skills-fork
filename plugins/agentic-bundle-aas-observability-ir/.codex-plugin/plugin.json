@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "AAS Observability IR",
     "shortDescription": "Design observability, SLOs, traces, dashboards, monitoring, incident response, troubleshooting, and postmortem workflows.",
-    "longDescription": "Design observability, SLOs, traces, dashboards, monitoring, incident response, troubleshooting, and postmortem workflows. Operational work needs consistent procedure and proof gates, making it more plugin-worthy than isolated observability prompts. Recommended for: SRE teams, Backend teams owning production, Incident responders. Not for: Marketing campaign planning, Static document conversion. Covers Observability Engineer, Distributed Tracing, and 8 more skills.",
+    "longDescription": "Design observability, SLOs, traces, dashboards, monitoring, incident response, troubleshooting, and postmortem workflows. Operational work needs consistent procedure and proof gates, making it more plugin-worthy than isolated observability prompts. Recommended for: SRE teams, Backend teams owning production, Incident responders. Not for: Marketing campaign planning, Static document conversion. Covers Observability Engineer, Observability And Instrumentation, and 8 more skills.",
     "developerName": "sickn33 and contributors",
     "category": "Specialized Product Plugins - Next Wave",
     "capabilities": [

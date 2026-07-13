@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "LLM Application Developer",
-    "shortDescription": "AI & Agents · 5 curated skills",
-    "longDescription": "For building production LLM applications. Covers LLM App Patterns, RAG Implementation, and 3 more skills.",
+    "shortDescription": "AI & Agents · 6 curated skills",
+    "longDescription": "For building production LLM applications. Covers LLM App Patterns, RAG Implementation, and 4 more skills.",
     "developerName": "sickn33 and contributors",
     "category": "AI & Agents",
     "capabilities": [

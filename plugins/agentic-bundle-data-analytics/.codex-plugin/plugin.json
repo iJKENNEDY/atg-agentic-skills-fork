@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Data & Analytics",
-    "shortDescription": "Data & Analytics · 6 curated skills",
-    "longDescription": "For making sense of the numbers. Covers Analytics Tracking, Claude D3js Skill, and 4 more skills.",
+    "shortDescription": "Data & Analytics · 7 curated skills",
+    "longDescription": "For making sense of the numbers. Covers Analytics Tracking, Data Quality Frameworks, and 5 more skills.",
     "developerName": "sickn33 and contributors",
     "category": "Data & Analytics",
     "capabilities": [

@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Integration & APIs",
-    "shortDescription": "Specialized Packs · 5 curated skills",
-    "longDescription": "For connecting services and building integrations. Covers Stripe Integration, Twilio Communications, and 3 more skills.",
+    "shortDescription": "Specialized Packs · 6 curated skills",
+    "longDescription": "For connecting services and building integrations. Covers API Integration, Stripe Integration, and 4 more skills.",
     "developerName": "sickn33 and contributors",
     "category": "Specialized Packs",
     "capabilities": [

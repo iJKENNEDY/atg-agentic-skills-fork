@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "DevOps & Cloud",
-    "shortDescription": "DevOps & Infrastructure · 7 curated skills",
-    "longDescription": "For infrastructure and scaling. Covers Docker Expert, AWS Serverless, and 5 more skills.",
+    "shortDescription": "DevOps & Infrastructure · 8 curated skills",
+    "longDescription": "For infrastructure and scaling. Covers Environment Setup Guide, Bash Linux, and 6 more skills.",
     "developerName": "sickn33 and contributors",
     "category": "DevOps & Infrastructure",
     "capabilities": [

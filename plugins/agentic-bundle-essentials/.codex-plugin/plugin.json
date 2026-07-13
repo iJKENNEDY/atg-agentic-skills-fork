@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Essentials",
     "shortDescription": "Essentials & Core · 5 curated skills",
-    "longDescription": "For everyone. Install these first. Covers Concise Planning, Lint And Validate, and 3 more skills.",
+    "longDescription": "For everyone. Install these first. Covers Concise Planning, Test Driven Development, and 3 more skills.",
     "developerName": "sickn33 and contributors",
     "category": "Essentials & Core",
     "capabilities": [

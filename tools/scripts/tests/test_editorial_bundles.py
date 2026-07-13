@@ -65,7 +65,13 @@ class EditorialBundlesTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_get_bundle_skills_reads_json_manifest_by_name_and_id(self):
-        expected = ["concise-planning", "git-pushing", "kaizen", "lint-and-validate", "systematic-debugging"]
+        expected = [
+            "concise-planning",
+            "git-pushing",
+            "lint-and-validate",
+            "systematic-debugging",
+            "test-driven-development",
+        ]
         self.assertEqual(get_bundle_skills.get_bundle_skills(["Essentials"]), expected)
         self.assertEqual(get_bundle_skills.get_bundle_skills(["essentials"]), expected)
         web_wizard_skills = get_bundle_skills.get_bundle_skills(["web-wizard"])
@@ -220,6 +226,113 @@ class EditorialBundlesTests(unittest.TestCase):
                 compatibility["targets"]["claude"] == "supported",
                 f"Claude root plugin inclusion mismatch for {skill_id}",
             )
+
+    def test_skill_mirror_check_rejects_stale_and_unexpected_files(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = pathlib.Path(temp_dir)
+            canonical = root / "skills" / "sample"
+            mirror = root / "plugin" / "skills" / "sample"
+            canonical.mkdir(parents=True)
+            mirror.mkdir(parents=True)
+            (canonical / "SKILL.md").write_text("canonical\n", encoding="utf-8")
+            (mirror / "SKILL.md").write_text("stale\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "stale mirrored file: sample/SKILL.md"):
+                editorial_bundles._assert_skill_mirror_matches(
+                    root,
+                    root / "plugin" / "skills",
+                    ["sample"],
+                    "sample plugin",
+                )
+
+            (mirror / "SKILL.md").write_text("canonical\n", encoding="utf-8")
+            (mirror / "unexpected.txt").write_text("extra\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "unexpected mirrored file: sample/unexpected.txt"):
+                editorial_bundles._assert_skill_mirror_matches(
+                    root,
+                    root / "plugin" / "skills",
+                    ["sample"],
+                    "sample plugin",
+                )
+
+    def test_skill_mirror_check_rejects_symlinks(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = pathlib.Path(temp_dir)
+            canonical = root / "skills" / "sample"
+            mirror = root / "plugin" / "skills" / "sample"
+            canonical.mkdir(parents=True)
+            mirror.mkdir(parents=True)
+            (canonical / "SKILL.md").write_text("canonical\n", encoding="utf-8")
+            (mirror / "SKILL.md").symlink_to(canonical / "SKILL.md")
+
+            with self.assertRaisesRegex(ValueError, "unexpected symlink: sample/SKILL.md"):
+                editorial_bundles._assert_skill_mirror_matches(
+                    root,
+                    root / "plugin" / "skills",
+                    ["sample"],
+                    "sample plugin",
+                )
+
+            mirror_root_link = root / "linked-skills"
+            mirror_root_link.symlink_to(root / "plugin" / "skills", target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "skills directory must not be a symlink"):
+                editorial_bundles._assert_skill_mirror_matches(
+                    root,
+                    mirror_root_link,
+                    ["sample"],
+                    "sample plugin",
+                )
+
+    def test_plugin_metadata_layout_rejects_unexpected_files(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            plugin_root = pathlib.Path(temp_dir) / "plugin"
+            manifest = plugin_root / ".codex-plugin" / "plugin.json"
+            manifest.parent.mkdir(parents=True)
+            manifest.write_text("{}\n", encoding="utf-8")
+            (plugin_root / "README.md").write_text("stale\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "metadata layout is out of sync: unexpected README.md"):
+                editorial_bundles._assert_plugin_metadata_layout(
+                    plugin_root,
+                    {".codex-plugin/plugin.json"},
+                    "sample plugin",
+                )
+
+    def test_json_check_requires_canonical_serialization_and_regular_file(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = pathlib.Path(temp_dir)
+            manifest = root / "plugin.json"
+            manifest.write_text('{"name":"sample"}\n', encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "is out of sync"):
+                editorial_bundles._assert_json_matches(
+                    manifest,
+                    {"name": "sample"},
+                    "sample manifest",
+                    root,
+                )
+
+            manifest.write_bytes(b'{\r\n  "name": "sample"\r\n}\r\n')
+            with self.assertRaisesRegex(ValueError, "is out of sync"):
+                editorial_bundles._assert_json_matches(
+                    manifest,
+                    {"name": "sample"},
+                    "sample manifest",
+                    root,
+                )
+
+            external = root / "external"
+            external.mkdir()
+            (external / "plugin.json").write_text('{\n  "name": "sample"\n}\n', encoding="utf-8")
+            linked_parent = root / "linked"
+            linked_parent.symlink_to(external, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "path must not contain a symlink"):
+                editorial_bundles._assert_json_matches(
+                    linked_parent / "plugin.json",
+                    {"name": "sample"},
+                    "sample manifest",
+                    root,
+                )
 
     def test_remove_tree_retries_on_enotempty(self):
         target = REPO_ROOT / "plugins" / "agentic-awesome-skills" / "skills"

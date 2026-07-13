@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Agent Architect",
-    "shortDescription": "AI & Agents · 6 curated skills",
-    "longDescription": "For building AI systems and autonomous agents. Covers Agent Evaluation, LangGraph, and 4 more skills.",
+    "shortDescription": "AI & Agents · 7 curated skills",
+    "longDescription": "For building AI systems and autonomous agents. Covers Prompt Engineering, AI Agents Architect, and 5 more skills.",
     "developerName": "sickn33 and contributors",
     "category": "AI & Agents",
     "capabilities": [
